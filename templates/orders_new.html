@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - Planning Industrie AI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>Planning Industrie AI</h1>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/orders" class="active">Orders</a></li>
+                <li><a href="/planning">Planning</a></li>
+                <li><a href="/agenda">Agenda</a></li>
+                <li><a href="/medewerkers">Medewerkers</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Order Overzicht</h2>
+            <button class="btn btn-primary" onclick="showNewOrderForm()">+ Nieuw Project</button>
+        </div>
+
+        <!-- Nieuw Order Formulier -->
+        <div id="newOrderForm" class="form-container" style="display: none;">
+            <h3>Nieuw Project Aanmaken</h3>
+            <form id="orderForm" onsubmit="createOrder(event)">
+                <!-- Basis Gegevens -->
+                <div class="form-section">
+                    <h4>Basis Gegevens</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ordernummer">Ordernummer *</label>
+                            <input type="text" id="ordernummer" name="ordernummer" required placeholder="bijv. ORD-2025-001">
+                        </div>
+                        <div class="form-group">
+                            <label for="klant">Klant *</label>
+                            <input type="text" id="klant" name="klant" required placeholder="Klant naam">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="omschrijving">Korte Omschrijving *</label>
+                            <input type="text" id="omschrijving" name="omschrijving" required placeholder="Korte beschrijving">
+                        </div>
+                        <div class="form-group">
+                            <label for="klantreferentie">Klantreferentie</label>
+                            <input type="text" id="klantreferentie" name="klantreferentie" placeholder="Klant referentie">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="leverdatum">Leverdatum *</label>
+                            <input type="date" id="leverdatum" name="leverdatum" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="opmerkingen">Opmerkingen / Aandachtspunten</label>
+                        <textarea id="opmerkingen" name="opmerkingen" rows="3" placeholder="Voeg hier opmerkingen toe..."></textarea>
+                    </div>
+                </div>
+
+                <!-- FASE 1: VOORBEREIDING -->
+                <div class="form-section">
+                    <h4>FASE 1: Voorbereiding</h4>
+                    <div class="form-group">
+                        <label for="uren_voorbereiding">Uren Voorbereiding</label>
+                        <input type="number" id="uren_voorbereiding" name="uren_voorbereiding" step="0.5" min="0" value="0" oninput="updateTotaalUren()">
+                    </div>
+                    <div class="form-group">
+                        <label>Types Voorbereiding (meerdere mogelijk)</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label"><input type="checkbox" name="voorbereiding_type" value="Boren">Boren</label>
+                            <label class="checkbox-label"><input type="checkbox" name="voorbereiding_type" value="Tappen">Tappen</label>
+                            <label class="checkbox-label"><input type="checkbox" name="voorbereiding_type" value="Walsen">Walsen</label>
+                            <label class="checkbox-label"><input type="checkbox" name="voorbereiding_type" value="Buigen">Buigen</label>
+                            <label class="checkbox-label"><input type="checkbox" name="voorbereiding_type" value="Zetten">Zetten</label>
+                            <label class="checkbox-label"><input type="checkbox" name="voorbereiding_type" value="Schuren/Soevereinen">Schuren/Soevereinen</label>
+                            <label class="checkbox-label"><input type="checkbox" name="voorbereiding_type" value="Zagen">Zagen</label>
+                            <label class="checkbox-label"><input type="checkbox" name="voorbereiding_type" value="Knippen">Knippen</label>
+                            <label class="checkbox-label"><input type="checkbox" name="voorbereiding_type" value="Ponsen">Ponsen</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FASE 2: PRODUCTIE -->
+                <div class="form-section">
+                    <h4>FASE 2: Productie</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="uren_samenstellen">Uren Samenstellen</label>
+                            <input type="number" id="uren_samenstellen" name="uren_samenstellen" step="0.5" min="0" value="0" oninput="updateTotaalUren()">
+                        </div>
+                        <div class="form-group">
+                            <label for="uren_aflassen">Uren Aflassen</label>
+                            <input type="number" id="uren_aflassen" name="uren_aflassen" step="0.5" min="0" value="0" oninput="updateTotaalUren()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Totaal Productie Uren: <span id="totaalProductieUren">0</span></strong></label>
+                    </div>
+                </div>
+
+                <!-- FASE 3: CONSERVERING -->
+                <div class="form-section">
+                    <h4>FASE 3: Conservering</h4>
+                    <div class="form-group">
+                        <label>Conserveringen (meerdere mogelijk)</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label"><input type="checkbox" name="conservering" value="Thermisch verzinken">Thermisch verzinken</label>
+                            <label class="checkbox-label"><input type="checkbox" name="conservering" value="Elektrolytisch verzinken">Elektrolytisch verzinken</label>
+                            <label class="checkbox-label"><input type="checkbox" name="conservering" value="Poedercoaten">Poedercoaten</label>
+                            <label class="checkbox-label"><input type="checkbox" name="conservering" value="Verzinken+Coaten">Verzinken+Coaten</label>
+                            <label class="checkbox-label"><input type="checkbox" name="conservering" value="Beitsen">Beitsen</label>
+                            <label class="checkbox-label"><input type="checkbox" name="conservering" value="Stralen">Stralen</label>
+                            <label class="checkbox-label"><input type="checkbox" name="conservering" value="Natlakken">Natlakken</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="conserveringsdatum">Conserveringsdatum</label>
+                        <input type="date" id="conserveringsdatum" name="conserveringsdatum">
+                    </div>
+                </div>
+
+                <!-- FASE 4: MONTAGE -->
+                <div class="form-section">
+                    <h4>FASE 4: Montage</h4>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="heeft_montage" name="heeft_montage" onchange="toggleMontageType()">
+                            Heeft Montage
+                        </label>
+                    </div>
+                    <div class="form-group" id="montageTypeGroup" style="display: none;">
+                        <label for="montage_type">Montage Type</label>
+                        <select id="montage_type" name="montage_type">
+                            <option value="">-- Selecteer --</option>
+                            <option value="Intern">Intern</option>
+                            <option value="Extern">Extern</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="form-section">
+                    <h4>Status</h4>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="materiaal_besteld" name="materiaal_besteld">
+                            Materiaal Besteld
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="materiaal_binnen" name="materiaal_binnen">
+                            Materiaal Binnen
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="productie_gereed" name="productie_gereed">
+                            Productie Gereed
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="project_gereed" name="project_gereed">
+                            Project Gereed
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Project Aanmaken</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideNewOrderForm()">Annuleren</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Filter en Zoek -->
+        <div class="filter-bar">
+            <input type="text" id="searchOrders" placeholder="Zoek in orders..." onkeyup="filterOrders()">
+            <select id="statusFilter" onchange="filterOrders()">
+                <option value="">Alle statussen</option>
+                <option value="werkvoorbereiding">Werkvoorbereiding</option>
+                <option value="materiaal_besteld">Materiaal Besteld</option>
+                <option value="materiaal_binnen">Materiaal Binnen</option>
+                <option value="in_productie">In Productie</option>
+                <option value="productie_gereed">Productie Gereed</option>
+                <option value="project_gereed">Project Gereed</option>
+            </select>
+        </div>
+
+        <!-- Orders Tabel -->
+        <div class="table-container">
+            <table id="ordersTable">
+                <thead>
+                    <tr>
+                        <th>Ordernummer</th>
+                        <th>Klant</th>
+                        <th>Omschrijving</th>
+                        <th>Leverdatum</th>
+                        <th>Totaal Uren</th>
+                        <th>Status</th>
+                        <th>Acties</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                    <!-- Orders worden hier geladen -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/static/js/orders.js"></script>
+    <script>
+        function toggleMontageType() {
+            const heeftMontage = document.getElementById('heeft_montage').checked;
+            document.getElementById('montageTypeGroup').style.display = heeftMontage ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
+

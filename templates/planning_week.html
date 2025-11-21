@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning - Planning Industrie AI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/planning.css">
+    <link rel="stylesheet" href="/static/css/planning-week.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>Planning Industrie AI</h1>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/orders">Orders</a></li>
+                <li><a href="/planning" class="active">Planning</a></li>
+                <li><a href="/agenda">Agenda</a></li>
+                <li><a href="/medewerkers">Medewerkers</a></li>
+                <li><a href="/data">Data</a></li>
+                <li><a href="/projectplanning">Projectplanning</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Planning Overzicht</h2>
+            <div class="planning-controls">
+                <label for="viewMode" style="margin-right: 5px;">Weergave:</label>
+                <select id="viewMode" onchange="changeViewMode()" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-right: 10px;">
+                    <option value="week">Week</option>
+                    <option value="2weeks">2 Weken</option>
+                    <option value="month">Maand</option>
+                </select>
+                <button class="btn btn-secondary" onclick="previousPeriod()">← Vorige</button>
+                <select id="weekSelect" onchange="handleWeekChange()">
+                    <!-- Weken worden hier geladen -->
+                </select>
+                <select id="jaarSelect" onchange="handleYearChange()">
+                    <!-- Jaren worden hier geladen -->
+                </select>
+                <button class="btn btn-secondary" onclick="nextPeriod()">Volgende →</button>
+                <button class="btn btn-primary" onclick="setCurrentWeek()">Huidige Week</button>
+            </div>
+        </div>
+
+        <!-- Waarschuwingen -->
+        <div id="warnings" style="display: none; margin-top: 20px;"></div>
+
+        <!-- Week Planning Weergave -->
+        <div class="planning-week-container">
+            <div class="planning-header">
+                <div class="planning-header-left">
+                    <div class="header-cell header-medewerker">Medewerker</div>
+                    <div class="header-cell header-projecten" style="min-width: 250px;">
+                        Projecten
+                    </div>
+                </div>
+                <div class="planning-header-weeks" id="weeksHeader">
+                    <!-- Week kolommen met 7 dagen per week worden hier geladen -->
+                </div>
+            </div>
+
+            <div class="planning-body" id="planningBody">
+                <!-- Planning wordt hier geladen -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal voor project details -->
+    <div id="projectModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);">
+        <div style="background: white; margin: 5% auto; padding: 20px; border-radius: 8px; width: 80%; max-width: 600px; max-height: 80vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 id="modalTitle" style="margin: 0;">Project Details</h2>
+                <button onclick="closeProjectModal()" style="background: #e74c3c; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-size: 1.2rem;">&times;</button>
+            </div>
+            <div id="modalContent">
+                <!-- Content wordt hier ingevuld -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/planning-week.js"></script>
+    <script src="/static/js/planning-interactive.js"></script>
+    <script>
+        // Initialiseer interactieve functies na laden
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiseer drag & drop na planning geladen
+            setTimeout(() => {
+                if (window.initDragAndDrop) {
+                    initDragAndDrop();
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
+

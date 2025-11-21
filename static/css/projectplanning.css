@@ -1,0 +1,189 @@
+/* Projectplanning Weergave - Gantt Style per Project */
+
+.projectplanning-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow-x: auto;
+    margin-top: 20px;
+    width: 100%;
+    height: calc(100vh - 150px); /* Meer schermvullend */
+    min-height: 700px;
+}
+
+.projectplanning-header {
+    display: flex;
+    background: #2c3e50;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.projectplanning-header .project-info {
+    background: #2c3e50 !important;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.projectplanning-row {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    min-height: 50px; /* Smaller rows voor meer projecten in beeld */
+    height: 50px;
+}
+
+.projectplanning-row:hover {
+    background: #f8f9fa;
+}
+
+.project-info {
+    min-width: 500px;
+    padding: 10px;
+    border-right: 2px solid #ddd;
+    background: white;
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 150px 200px 150px;
+    gap: 10px;
+    align-items: center;
+}
+
+.project-code-col {
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: #2c3e50;
+}
+
+.project-omschrijving-col {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.project-klant-col {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.project-timeline {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 5px 0; /* Less padding */
+    min-height: 50px;
+    height: 50px;
+}
+
+.project-bar {
+    position: absolute;
+    height: 50px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    z-index: 2;
+}
+
+.project-bar:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.project-bar.voorbereiding {
+    background: #95a5a6; /* Grijs */
+}
+
+.project-bar.samenstellen {
+    background: #3498db; /* Blauw */
+}
+
+.project-bar.aflassen {
+    background: #16a085; /* Teal/groen */
+}
+
+.project-bar.conservering {
+    background: #e67e22; /* Oranje */
+}
+
+.project-bar.montage {
+    background: #9b59b6; /* Paars */
+}
+
+.milestone {
+    position: absolute;
+    width: 3px;
+    height: 60px;
+    background: #e74c3c;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.milestone::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -4px;
+    width: 11px;
+    height: 11px;
+    background: #e74c3c;
+    border-radius: 50%;
+}
+
+.milestone.conservering {
+    background: #f39c12;
+}
+
+.milestone.conservering::before {
+    background: #f39c12;
+}
+
+.timeline-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.timeline-day {
+    flex: 1;
+    border-right: 1px solid #f0f0f0;
+    position: relative;
+    min-width: 45px; /* Minimale breedte voor leesbare datums */
+}
+
+.timeline-day.weekend {
+    background: #ffe8e8;
+}
+
+.timeline-day-header {
+    position: absolute;
+    top: -25px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.7rem;
+    color: #666;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 2px;
+}
+
+.timeline-day-header.weekend {
+    color: #e74c3c;
+}
+

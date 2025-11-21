@@ -1,0 +1,649 @@
+/* Week Planning Weergave - 7 Dagen per Week - Gantt Style met Project Balken */
+
+.planning-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.planning-controls select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.planning-week-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow-x: auto;
+    overflow-y: hidden; /* Geen verticale scroll in container zelf */
+    margin-top: 10px;
+    width: 100%;
+    height: calc(100vh - 150px); /* Schermvullend - ruimte voor header en controls */
+    min-height: calc(100vh - 150px);
+    max-height: calc(100vh - 150px);
+    position: fixed;
+    top: 150px; /* Meer ruimte voor controls */
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.planning-header {
+    display: flex;
+    background: #2c3e50;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.planning-header-left {
+    display: flex;
+    width: 400px; /* Vaste breedte: 150px medewerker + 250px projecten */
+    min-width: 400px;
+    max-width: 400px;
+    position: sticky;
+    left: 0;
+    background: #2c3e50;
+    z-index: 11;
+}
+
+.header-cell {
+    padding: 15px;
+    font-weight: bold;
+    border-right: 1px solid rgba(255,255,255,0.2);
+    text-align: center;
+}
+
+.header-medewerker {
+    width: 150px; /* Vaste breedte - niet aanpassen aan naam lengte */
+    min-width: 150px;
+    max-width: 150px;
+}
+
+.header-projecten {
+    width: 250px; /* Vaste breedte */
+    min-width: 250px;
+    max-width: 250px;
+}
+
+.planning-header-weeks {
+    display: flex;
+    flex: 1;
+    overflow-x: visible; /* Geen scroll in header - alleen in body voor lazy loading */
+    /* Breedte wordt dynamisch ingesteld door JS */
+}
+
+.week-header-group {
+    flex: 1;
+    border-right: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.week-title {
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.week-days {
+    display: flex;
+}
+
+.day-header {
+    flex: 1;
+    padding: 8px 5px;
+    text-align: center;
+    font-size: 0.8rem;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    min-width: 100px;
+}
+
+.day-header:last-child {
+    border-right: none;
+}
+
+.planning-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+    scroll-behavior: smooth; /* Smooth scrolling voor lazy loading */
+    /* Zorg dat alles zichtbaar is */
+    position: relative;
+}
+
+.planning-row {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    /* min-height wordt dynamisch ingesteld door JS */
+}
+
+.planning-row:hover {
+    background-color: #f8f9fa;
+}
+
+.planning-row-left {
+    display: flex;
+    width: 400px; /* Vaste breedte: 150px medewerker + 250px projecten */
+    min-width: 400px;
+    max-width: 400px;
+    position: sticky;
+    left: 0;
+    background: white;
+    z-index: 5;
+    border-right: 2px solid #ddd;
+}
+
+.medewerker-cell {
+    padding: 15px 10px;
+    width: 150px; /* Vaste breedte - niet aanpassen aan naam lengte */
+    max-width: 150px;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid #eee;
+    background: #f8f9fa;
+}
+
+.medewerker-naam {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.medewerker-uren {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: normal;
+}
+
+.project-list-container {
+    flex: 1;
+    min-width: 250px;
+    width: 250px; /* Vaste breedte */
+    max-width: 250px;
+    padding: 10px;
+    overflow-y: visible !important; /* GEEN scrollbalk - automatische hoogte aanpassing */
+    overflow-x: hidden;
+    /* Hoogte wordt dynamisch ingesteld door JS */
+}
+
+.project-list {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.project-list-item {
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    background: #f8f9fa;
+    min-height: 18px !important;
+    max-height: 18px !important;
+    height: 18px !important; /* EXACT ZELFDE HOOGTE ALS PROJECT BAR */
+}
+
+.project-list-code {
+    font-weight: bold;
+    color: #2c3e50;
+    min-width: 80px;
+}
+
+.project-list-bewerking {
+    flex: 1;
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.project-list-uren {
+    font-weight: bold;
+    color: #555;
+    min-width: 50px;
+    text-align: right;
+}
+
+.project-list-item.voorbereiding {
+    background: #fee;
+    border-left: 3px solid #e74c3c;
+}
+
+.project-list-item.samenstellen {
+    background: #eef;
+    border-left: 3px solid #3498db;
+}
+
+.project-list-item.aflassen {
+    background: #efe;
+    border-left: 3px solid #2ecc71;
+}
+
+.project-list-item.montage {
+    background: #ffe;
+    border-left: 3px solid #f39c12;
+}
+
+.planning-row-weeks {
+    display: flex;
+    flex: 0 0 auto; /* Geen flex groei - vaste breedte */
+    /* Breedte wordt dynamisch ingesteld door JS op basis van numWeeks */
+}
+
+.week-cell {
+    flex: 0 0 auto; /* Geen flex groei - vaste breedte */
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-right: 1px solid #eee;
+    /* min-width en width worden dynamisch ingesteld door JS */
+    position: relative;
+    /* Zorg dat project bars zichtbaar zijn */
+    overflow: visible !important;
+}
+
+.day-cell {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border-right: 1px solid #f0f0f0;
+    /* Breedte wordt dynamisch ingesteld door JS */
+    position: relative;
+    z-index: 1;
+    flex: 0 0 auto; /* Geen flex groei - vaste breedte */
+}
+
+.day-cell:last-child {
+    border-right: none;
+}
+
+.day-cell.weekend {
+    background: #f5f5f5 !important; /* Lichtgrijs voor weekend */
+}
+
+.day-header.weekend {
+    background: #e0e0e0 !important; /* Lichtgrijs voor weekend header */
+    color: #999 !important;
+}
+
+.day-beschikbaar {
+    font-size: 0.75rem;
+    color: #666;
+    text-align: center;
+    padding: 3px 0;
+    font-weight: bold;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 5px;
+    display: none; /* Verborgen zoals gevraagd */
+}
+
+.week-projects-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* right en bottom worden niet gebruikt - width wordt door JS ingesteld */
+    bottom: 0;
+    display: grid;
+    /* grid-template-columns wordt door JS ingesteld - EXACT overeenkomend met day-cells */
+    gap: 2px;
+    padding: 2px;
+    z-index: 2;
+    pointer-events: none;
+    /* Zorg dat het zichtbaar is */
+    min-height: 18px;
+}
+
+.week-projects-container > * {
+    pointer-events: all;
+}
+
+.project-bar {
+    background: #3498db !important;
+    color: white !important;
+    padding: 4px 6px;
+    border-radius: 3px;
+    font-size: var(--planning-font-size, 0.7rem); /* Dynamische font size */
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    position: relative !important;
+    min-height: 18px !important;
+    max-height: 18px !important;
+    height: 18px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    word-break: break-word;
+    margin: 2px 0;
+    z-index: 11 !important; /* HOOGSTE Z-INDEX - ZORG DAT HET ZICHTBAAR IS */
+    /* ZORG DAT HET ZICHTBAAR IS */
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.project-bar:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.project-bar.bar-start {
+    border-left: 3px solid rgba(0,0,0,0.3);
+}
+
+.project-bar.voorbereiding {
+    background: #e74c3c;
+}
+
+.project-bar.samenstellen {
+    background: #3498db;
+}
+
+.project-bar.aflassen {
+    background: #2ecc71;
+}
+
+.project-bar.montage {
+    background: #f39c12;
+}
+
+.project-bar-title {
+    font-weight: bold;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 3px;
+}
+
+.project-bar-days {
+    font-size: 0.65rem;
+    background: rgba(255,255,255,0.25);
+    padding: 1px 3px;
+    border-radius: 2px;
+    margin-right: 3px;
+    white-space: nowrap;
+}
+
+.project-bar-uren {
+    font-size: 0.7rem;
+    background: rgba(255,255,255,0.3);
+    padding: 2px 4px;
+    border-radius: 2px;
+    white-space: nowrap;
+    margin-left: 5px;
+}
+
+.empty-day {
+    color: #999;
+    font-style: italic;
+    font-size: 0.75rem;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.empty-week {
+    color: #999;
+    font-style: italic;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Responsive */
+@media (max-width: 1600px) {
+    .planning-week-container {
+        font-size: 0.9rem;
+    }
+    
+    .day-cell {
+        min-width: 90px;
+    }
+    
+    .week-cell {
+        min-width: 630px; /* 7 dagen * 90px */
+    }
+    
+    .header-cell {
+        padding: 10px 5px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .planning-week-container {
+        font-size: 0.85rem;
+    }
+    
+    .day-cell {
+        min-width: 70px;
+    }
+    
+    .week-cell {
+        min-width: 490px; /* 7 dagen * 70px */
+    }
+    
+    .project-bar {
+        font-size: 0.7rem;
+        padding: 4px 6px;
+    }
+}
+
+/* Empty projects */
+.empty-projects {
+    color: #999;
+    font-style: italic;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Milestones */
+.milestone {
+    background: #f39c12;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.65rem;
+    cursor: pointer;
+    position: relative;
+    min-height: 18px !important;
+    max-height: 18px !important;
+    height: 18px !important; /* ZELFDE HOOGTE ALS PROJECT BAR */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    margin: 2px 0;
+    border: 2px solid rgba(255,255,255,0.5);
+    z-index: 3;
+}
+
+.milestone-conservering {
+    background: #e67e22;
+    border-left: 4px solid #d35400;
+}
+
+.milestone-einddatum {
+    background: #27ae60;
+    border-left: 4px solid #229954;
+}
+
+.milestone-icon {
+    font-size: 0.9rem;
+}
+
+.milestone-label {
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+/* Waarschuwingen */
+.warnings-box {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.warnings-box h4 {
+    margin: 0 0 10px 0;
+    color: #856404;
+    font-size: 1.1rem;
+}
+
+.warnings-box ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #856404;
+}
+
+.warnings-box li {
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+
+/* ========== MOBILE RESPONSIVE ========== */
+@media screen and (max-width: 768px) {
+    .planning-week-container {
+        height: calc(100vh - 80px);
+        top: 80px;
+        margin-top: 0;
+        border-radius: 0;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    
+    .planning-header {
+        flex-direction: column;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    
+    .planning-controls {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .planning-controls select,
+    .planning-controls button {
+        width: 100%;
+        font-size: 0.85rem;
+        padding: 10px;
+    }
+    
+    .planning-row {
+        flex-direction: column;
+        min-height: auto !important;
+        height: auto !important;
+    }
+    
+    .planning-row-left {
+        width: 100%;
+        border-bottom: 2px solid #e0e0e0;
+        flex-direction: row;
+    }
+    
+    .planning-row-weeks {
+        width: 100%;
+        overflow-x: auto;
+        min-height: 200px;
+    }
+    
+    .medewerker-cell {
+        padding: 8px;
+        font-size: 0.9rem;
+        min-width: 120px;
+    }
+    
+    .project-list-container {
+        /* max-height: 150px !important; Verwijderd - geen max hoogte */
+        padding: 8px;
+        overflow-y: visible !important; /* GEEN scrollbalk - automatische hoogte */
+    }
+    
+    .week-header-group {
+        min-width: 420px; /* 7 dagen * 60px */
+    }
+    
+    .day-header {
+        min-width: 60px;
+        font-size: 0.7rem;
+        padding: 5px 2px;
+    }
+    
+    .day-cell {
+        min-width: 60px;
+        padding: 3px;
+    }
+    
+    .project-bar {
+        font-size: 0.65rem;
+        padding: 2px 4px;
+        min-height: 16px;
+        max-height: 16px;
+    }
+    
+    .week-days {
+        min-width: 420px; /* 7 dagen * 60px */
+    }
+    
+    .week-cell {
+        min-width: 420px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .planning-week-container {
+        height: calc(100vh - 60px);
+        top: 60px;
+    }
+    
+    .day-header {
+        min-width: 50px;
+        font-size: 0.65rem;
+    }
+    
+    .day-cell {
+        min-width: 50px;
+    }
+    
+    .week-days {
+        min-width: 350px; /* 7 dagen * 50px */
+    }
+    
+    .week-cell {
+        min-width: 350px;
+    }
+    
+    .week-header-group {
+        min-width: 350px;
+    }
+    
+    .project-bar {
+        font-size: 0.6rem;
+    }
+    
+    .medewerker-naam {
+        font-size: 0.85rem;
+    }
+    
+    .project-list-item {
+        font-size: 0.75rem;
+    }
+}

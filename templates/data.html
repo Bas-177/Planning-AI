@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data - Planning Industrie AI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>Planning Industrie AI</h1>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/orders">Orders</a></li>
+                <li><a href="/planning">Planning</a></li>
+                <li><a href="/agenda">Agenda</a></li>
+                <li><a href="/medewerkers">Medewerkers</a></li>
+                <li><a href="/data" class="active">Data</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Standaard Data</h2>
+            <button class="btn btn-primary" onclick="showNewStandardForm()">+ Nieuw Standaard</button>
+        </div>
+
+        <!-- Nieuw Standaard Formulier -->
+        <div id="newStandardForm" class="form-container" style="display: none;">
+            <h3>Standaard Doorlooptijd Toevoegen</h3>
+            <form id="standardForm" onsubmit="createStandard(event)">
+                <div class="form-group">
+                    <label for="nabehandeling">Type Conservering *</label>
+                    <input type="text" id="nabehandeling" name="nabehandeling" required placeholder="bijv. Thermisch verzinken">
+                </div>
+                <div class="form-group">
+                    <label for="standaard_doorlooptijd_dagen">Standaard Doorlooptijd (dagen) *</label>
+                    <input type="number" id="standaard_doorlooptijd_dagen" name="standaard_doorlooptijd_dagen" required min="1" placeholder="bijv. 5">
+                    <small style="color: #666; font-size: 0.85rem;">Aantal werkdagen dat deze conservering standaard duurt</small>
+                </div>
+                <div class="form-group">
+                    <label for="klant">Klant (optioneel)</label>
+                    <input type="text" id="klant" name="klant" placeholder="Laat leeg voor algemene standaard, of specificeer klant">
+                    <small style="color: #666; font-size: 0.85rem;">Optioneel: specifieke klant voor deze standaard</small>
+                </div>
+                <div class="form-group">
+                    <label for="opmerkingen">Opmerkingen</label>
+                    <textarea id="opmerkingen" name="opmerkingen" rows="3" placeholder="Extra opmerkingen..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submitButton">Standaard Toevoegen</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideNewStandardForm()">Annuleren</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Standards Tabel -->
+        <div class="table-container" style="margin-top: 20px;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Type Conservering</th>
+                        <th>Standaard Doorlooptijd</th>
+                        <th>Klant</th>
+                        <th>Opmerkingen</th>
+                        <th>Acties</th>
+                    </tr>
+                </thead>
+                <tbody id="standardsTableBody">
+                    <!-- Standards worden hier geladen -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/static/js/data.js"></script>
+</body>
+</html>
+

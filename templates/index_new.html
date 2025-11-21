@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Industrie AI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/home.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>Planning Industrie AI</h1>
+            <ul class="nav-menu">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/orders">Orders</a></li>
+                <li><a href="/planning">Planning</a></li>
+                <li><a href="/agenda">Agenda</a></li>
+                <li><a href="/medewerkers">Medewerkers</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Zoek in orders..." />
+            <button onclick="searchOrders()">Zoeken</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Totaal Orders</h3>
+                <p class="stat-number" id="totaalOrders">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Open Orders</h3>
+                <p class="stat-number" id="openOrders">0</p>
+            </div>
+            <div class="stat-card warning">
+                <h3>Deadline Nadert</h3>
+                <p class="stat-number" id="deadlineNadert">0</p>
+            </div>
+        </div>
+
+        <!-- Agenda Meldingen -->
+        <div class="home-section">
+            <h2>📅 Agenda Meldingen</h2>
+            <div class="agenda-meldingen" id="agendaMeldingen">
+                <!-- Vrije dagen worden hier geladen -->
+            </div>
+        </div>
+
+        <!-- Projecten naar Conservering -->
+        <div class="home-section">
+            <h2>🏭 Projecten naar Conservering (Deze Week)</h2>
+            <div class="orders-grid" id="conserveringOrders">
+                <!-- Orders worden hier geladen -->
+            </div>
+        </div>
+
+        <!-- Orders Levering -->
+        <div class="home-section">
+            <h2>🚚 Orders Levering (Deze/Volgende Week)</h2>
+            <div class="orders-grid" id="leveringOrders">
+                <!-- Orders worden hier geladen -->
+            </div>
+        </div>
+
+        <!-- Alle Orders -->
+        <div class="home-section">
+            <h2>📋 Alle Orders</h2>
+            <div class="orders-grid" id="alleOrders">
+                <!-- Orders worden hier geladen -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/home.js"></script>
+</body>
+</html>
+

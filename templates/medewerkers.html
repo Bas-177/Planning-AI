@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medewerkers Planning - Planning Industrie AI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>Planning Industrie AI</h1>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/orders">Orders</a></li>
+                <li><a href="/planning">Planning</a></li>
+                <li><a href="/agenda">Agenda</a></li>
+                <li><a href="/medewerkers" class="active">Medewerkers</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Medewerkers & Week Planning</h2>
+            <button class="btn btn-primary" onclick="showAddMedewerkerForm()">+ Medewerker Toevoegen</button>
+        </div>
+
+        <!-- Medewerkers beheer -->
+        <div class="form-container">
+            <h3>Medewerkers</h3>
+            <div class="table-container">
+                <table id="medewerkersTable">
+                    <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th>Actief</th>
+                            <th>Standaard Uren/Week</th>
+                            <th>Bewerkingen</th>
+                            <th>Acties</th>
+                        </tr>
+                    </thead>
+                    <tbody id="medewerkersTableBody">
+                        <!-- Medewerkers worden hier geladen -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Week Planning -->
+        <div class="form-container" style="margin-top: 30px;">
+            <h3>Week Planning - Beschikbare Uren</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="weekSelect">Week</label>
+                    <input type="number" id="weekSelect" min="1" max="52" value="" onchange="loadWeekPlanning()">
+                </div>
+                <div class="form-group">
+                    <label for="jaarSelect">Jaar</label>
+                    <input type="number" id="jaarSelect" min="2020" max="2030" value="2025" onchange="loadWeekPlanning()">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" onclick="loadWeekPlanning()">Laad Week</button>
+                    <button class="btn btn-secondary" onclick="setCurrentWeek()">Huidige Week</button>
+                </div>
+            </div>
+
+            <div id="weekPlanningContainer">
+                <!-- Week planning wordt hier geladen -->
+            </div>
+        </div>
+
+        <!-- Modal voor medewerker toevoegen -->
+        <div id="medewerkerModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeMedewerkerModal()">&times;</span>
+                <h3 id="modalTitle">Medewerker Toevoegen</h3>
+                <form id="medewerkerForm" onsubmit="saveMedewerker(event)">
+                    <div class="form-group">
+                        <label for="medewerkerNaam">Naam *</label>
+                        <input type="text" id="medewerkerNaam" name="naam" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="medewerkerActief">Actief</label>
+                        <input type="checkbox" id="medewerkerActief" name="actief" checked>
+                    </div>
+                    <div class="form-group">
+                        <label for="medewerkerStandaardUren">Standaard Uren per Week</label>
+                        <input type="number" id="medewerkerStandaardUren" name="standaard_uren_per_week" step="0.5" min="0" value="40" oninput="updateWeeklyTotal()">
+                    </div>
+                    <div class="form-section">
+                        <h4>Dagelijkse Standaard Uren</h4>
+                        <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">Stel de standaard werkuren per dag in (ma t/m zo)</p>
+                        <div class="form-row" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px;">
+                            <div class="form-group">
+                                <label for="uren_ma">Ma</label>
+                                <input type="number" id="uren_ma" name="standaard_uren_ma" step="0.5" min="0" value="8" oninput="updateWeeklyTotal()">
+                            </div>
+                            <div class="form-group">
+                                <label for="uren_di">Di</label>
+                                <input type="number" id="uren_di" name="standaard_uren_di" step="0.5" min="0" value="8" oninput="updateWeeklyTotal()">
+                            </div>
+                            <div class="form-group">
+                                <label for="uren_wo">Wo</label>
+                                <input type="number" id="uren_wo" name="standaard_uren_wo" step="0.5" min="0" value="8" oninput="updateWeeklyTotal()">
+                            </div>
+                            <div class="form-group">
+                                <label for="uren_do">Do</label>
+                                <input type="number" id="uren_do" name="standaard_uren_do" step="0.5" min="0" value="8" oninput="updateWeeklyTotal()">
+                            </div>
+                            <div class="form-group">
+                                <label for="uren_vr">Vr</label>
+                                <input type="number" id="uren_vr" name="standaard_uren_vr" step="0.5" min="0" value="8" oninput="updateWeeklyTotal()">
+                            </div>
+                            <div class="form-group">
+                                <label for="uren_za">Za</label>
+                                <input type="number" id="uren_za" name="standaard_uren_za" step="0.5" min="0" value="0" oninput="updateWeeklyTotal()">
+                            </div>
+                            <div class="form-group">
+                                <label for="uren_zo">Zo</label>
+                                <input type="number" id="uren_zo" name="standaard_uren_zo" step="0.5" min="0" value="0" oninput="updateWeeklyTotal()">
+                            </div>
+                        </div>
+                        <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Totaal per week: <strong><span id="weeklyTotal">40</span> uur</strong></p>
+                    </div>
+                    <div class="form-section">
+                        <h4>Bewerkingen</h4>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="kan_voorbereiden" name="kan_voorbereiden">
+                                Kan Voorbereiden
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="kan_samenstellen" name="kan_samenstellen">
+                                Kan Samenstellen
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="kan_aflassen" name="kan_aflassen">
+                                Kan Aflassen
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="kan_montage" name="kan_montage">
+                                Kan Montage
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Opslaan</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeMedewerkerModal()">Annuleren</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/medewerkers.js"></script>
+    <script>
+        function updateWeeklyTotal() {
+            const ma = parseFloat(document.getElementById('uren_ma')?.value) || 0;
+            const di = parseFloat(document.getElementById('uren_di')?.value) || 0;
+            const wo = parseFloat(document.getElementById('uren_wo')?.value) || 0;
+            const doValue = parseFloat(document.getElementById('uren_do')?.value) || 0;
+            const vr = parseFloat(document.getElementById('uren_vr')?.value) || 0;
+            const za = parseFloat(document.getElementById('uren_za')?.value) || 0;
+            const zo = parseFloat(document.getElementById('uren_zo')?.value) || 0;
+            
+            const total = ma + di + wo + doValue + vr + za + zo;
+            const totalElement = document.getElementById('weeklyTotal');
+            if (totalElement) {
+                totalElement.textContent = total.toFixed(1);
+            }
+            
+            // Update standaard uren per week veld
+            const standaardUrenField = document.getElementById('medewerkerStandaardUren');
+            if (standaardUrenField) {
+                standaardUrenField.value = total;
+            }
+        }
+    </script>
+</body>
+</html>
+

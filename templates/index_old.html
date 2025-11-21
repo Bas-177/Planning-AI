@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Industrie AI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>Planning Industrie AI</h1>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/orders">Orders</a></li>
+                <li><a href="/planning">Planning</a></li>
+                <li><a href="/agenda">Agenda</a></li>
+                <li><a href="/medewerkers">Medewerkers</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Zoek in orders..." />
+            <button onclick="searchOrders()">Zoeken</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Totaal Orders</h3>
+                <p class="stat-number">{{ stats.totaal_orders }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Open Orders</h3>
+                <p class="stat-number">{{ stats.open_orders }}</p>
+            </div>
+            <div class="stat-card warning">
+                <h3>Deadline Nadert</h3>
+                <p class="stat-number">{{ stats.deadline_nadert }}</p>
+            </div>
+        </div>
+
+        <div class="notifications" id="notifications">
+            <!-- Notificaties worden hier geladen -->
+        </div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
+

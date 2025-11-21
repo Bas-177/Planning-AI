@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projectplanning - Planning Industrie AI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/projectplanning.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>Planning Industrie AI</h1>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/orders">Orders</a></li>
+                <li><a href="/planning">Planning</a></li>
+                <li><a href="/agenda">Agenda</a></li>
+                <li><a href="/medewerkers">Medewerkers</a></li>
+                <li><a href="/data">Data</a></li>
+                <li><a href="/projectplanning" class="active">Projectplanning</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Projectplanning Overzicht</h2>
+            <div class="planning-controls">
+                <button class="btn btn-secondary" onclick="previousPeriod()">← Vorige</button>
+                <input type="date" id="startDate" onchange="loadProjectPlanning()" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                <input type="date" id="endDate" onchange="loadProjectPlanning()" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                <button class="btn btn-secondary" onclick="nextPeriod()">Volgende →</button>
+                <button class="btn btn-primary" onclick="setCurrentPeriod()">Huidige Periode</button>
+            </div>
+        </div>
+
+        <!-- Projectplanning Weergave -->
+        <div class="projectplanning-container">
+            <div id="projectplanningBody">
+                <!-- Projectplanning wordt hier geladen -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/projectplanning.js"></script>
+</body>
+</html>
+

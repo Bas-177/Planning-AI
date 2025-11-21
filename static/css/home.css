@@ -1,0 +1,145 @@
+/* Home pagina specifieke styles */
+
+.home-section {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.home-section h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-size: 1.5rem;
+}
+
+.agenda-meldingen {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.agenda-melding {
+    padding: 15px;
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.agenda-melding.vrije-dag {
+    background: #d1ecf1;
+    border-left-color: #17a2b8;
+}
+
+.orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.order-card {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.order-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.order-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 10px;
+}
+
+.order-card-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+.order-status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.order-status-badge.werkvoorbereiding {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.order-status-badge.materiaal_besteld {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.order-status-badge.materiaal_binnen {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.order-status-badge.in_productie {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.order-status-badge.productie_gereed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.order-status-badge.project_gereed {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.order-card-info {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.order-card-info strong {
+    color: #2c3e50;
+}
+
+.order-card-opmerkingen {
+    margin-top: 10px;
+    padding: 10px;
+    background: white;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: #495057;
+    border-left: 3px solid #007bff;
+}
+
+.order-card-opmerkingen.montage {
+    border-left-color: #f39c12;
+}
+
+.order-card-opmerkingen.uitlevering {
+    border-left-color: #28a745;
+}
+
+.order-status-select {
+    margin-top: 10px;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+

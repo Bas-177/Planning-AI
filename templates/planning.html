@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning - Planning Industrie AI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/planning.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1>Planning Industrie AI</h1>
+            <ul class="nav-menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/orders">Orders</a></li>
+                <li><a href="/planning" class="active">Planning</a></li>
+                <li><a href="/agenda">Agenda</a></li>
+                <li><a href="/medewerkers">Medewerkers</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Planning Overzicht</h2>
+            <div class="view-toggle">
+                <button class="btn btn-secondary" onclick="showKanbanView()">Kanban</button>
+                <button class="btn btn-secondary" onclick="showTableView()">Tabel</button>
+                <button class="btn btn-primary" onclick="window.location.href='/planning/week'">Week Planning</button>
+            </div>
+        </div>
+
+        <!-- Kanban View -->
+        <div id="kanbanView" class="kanban-board">
+            <div class="kanban-column">
+                <h3>Werkvoorbereiding</h3>
+                <div class="kanban-items" id="col-werkvoorbereiding">
+                    <!-- Items worden hier geladen -->
+                </div>
+            </div>
+            <div class="kanban-column">
+                <h3>Materiaal Besteld</h3>
+                <div class="kanban-items" id="col-materiaal_besteld">
+                    <!-- Items worden hier geladen -->
+                </div>
+            </div>
+            <div class="kanban-column">
+                <h3>Materiaal Binnen</h3>
+                <div class="kanban-items" id="col-materiaal_binnen">
+                    <!-- Items worden hier geladen -->
+                </div>
+            </div>
+            <div class="kanban-column">
+                <h3>In Productie</h3>
+                <div class="kanban-items" id="col-in_productie">
+                    <!-- Items worden hier geladen -->
+                </div>
+            </div>
+            <div class="kanban-column">
+                <h3>Productie Gereed</h3>
+                <div class="kanban-items" id="col-productie_gereed">
+                    <!-- Items worden hier geladen -->
+                </div>
+            </div>
+            <div class="kanban-column">
+                <h3>Project Gereed</h3>
+                <div class="kanban-items" id="col-project_gereed">
+                    <!-- Items worden hier geladen -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Table View -->
+        <div id="tableView" class="table-container" style="display: none;">
+            <table id="planningTable">
+                <thead>
+                    <tr>
+                        <th>Ordernummer</th>
+                        <th>Klant</th>
+                        <th>Omschrijving</th>
+                        <th>Leverdatum</th>
+                        <th>Uren</th>
+                        <th>Status</th>
+                        <th>Materiaal Besteld</th>
+                        <th>Materiaal Binnen</th>
+                        <th>Productie Gereed</th>
+                        <th>Project Gereed</th>
+                    </tr>
+                </thead>
+                <tbody id="planningTableBody">
+                    <!-- Orders worden hier geladen -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/static/js/planning.js"></script>
+</body>
+</html>
+

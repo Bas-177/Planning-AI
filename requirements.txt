@@ -1,0 +1,12 @@
+fastapi==0.121.2
+uvicorn[standard]==0.38.0
+pandas==2.3.3
+openpyxl==3.1.5
+scikit-learn==1.7.2
+jinja2==3.1.6
+python-multipart==0.0.9
+Pillow==10.0.0
+# pytesseract==0.3.10  # Optioneel: voor OCR functionaliteit - vereist Tesseract OCR installatie (zie INSTALL_PYTESSERACT.md)
+python-docx>=1.1.0  # Voor Word document extractie (versie 1.2.0 geïnstalleerd)
+PyPDF2==3.0.1  # Voor PDF extractie
+
