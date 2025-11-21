@@ -24,7 +24,14 @@ QUICK_START.bat
 ```
 
 ### 3. Open in Browser
-Ga naar: **http://localhost:8000**
+
+**Lokaal (deze computer):**
+- Ga naar: **http://localhost:8000**
+
+**Vanaf andere apparaten (telefoon, tablet, andere computers op hetzelfde netwerk):**
+- Zie **NETWERK_TOEGANG.md** voor instructies
+- Gebruik je IP-adres: **http://<jouw-ip-adres>:8000**
+- Het IP-adres wordt automatisch getoond wanneer je de server start
 
 ## 📁 Project Structuur
 
