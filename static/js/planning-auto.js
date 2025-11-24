@@ -77,13 +77,24 @@ async function generateAutomaticAssignments(orders, medewerkers) {
             
             // Voor elke bewerking: verdeel over medewerkers
             for (const bewerking of bewerkingen) {
-                // Vind medewerkers die deze bewerking kunnen doen
+                // Vind medewerkers die deze bewerking kunnen doen (check competenties)
+                const bewerkingLower = bewerking.bewerking.toLowerCase();
                 const geschikteMedewerkers = medewerkers.filter(m => {
                     if (!m.actief) return false;
                     
-                    // Check of medewerker deze bewerking kan doen (simpele logica)
-                    // In de toekomst kan dit uitgebreid worden met vaardigheden
-                    return true; // Voor nu: alle actieve medewerkers kunnen alles
+                    // Check competenties op basis van bewerking
+                    if (bewerkingLower.includes('voorbereiding') || bewerkingLower.includes('voorbereiden')) {
+                        return m.kan_voorbereiden === true || m.kan_voorbereiden === 'true' || m.kan_voorbereiden === 1;
+                    } else if (bewerkingLower.includes('samenstellen')) {
+                        return m.kan_samenstellen === true || m.kan_samenstellen === 'true' || m.kan_samenstellen === 1;
+                    } else if (bewerkingLower.includes('aflassen')) {
+                        return m.kan_aflassen === true || m.kan_aflassen === 'true' || m.kan_aflassen === 1;
+                    } else if (bewerkingLower.includes('montage')) {
+                        return m.kan_montage === true || m.kan_montage === 'true' || m.kan_montage === 1;
+                    }
+                    
+                    // Fallback: als geen specifieke competentie check, toestaan
+                    return true;
                 });
                 
                 if (geschikteMedewerkers.length === 0) continue;

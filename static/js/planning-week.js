@@ -675,9 +675,10 @@ function displayWeekPlanning(medewerkers, assignments, orders, weekPlannings, st
             }
         });
         
-        // Filter projecten voor de zichtbare weken - nu inclusief automatisch gegenereerde datums
+        // Filter projecten voor de zichtbare weken - ALLEEN projecten die in zichtbare periode vallen
+        // Dit zorgt ervoor dat de projecten kolom alleen projecten toont die daadwerkelijk in beeld zijn
         const visibleProjects = projectList.filter(proj => {
-            // ZORG DAT ALLE PROJECTEN MET LEVERDATUM GETOOND WORDEN
+            // ZORG DAT ALLE PROJECTEN MET LEVERDATUM GETOOND WORDEN (maar alleen als ze in zichtbare periode vallen)
             if (!proj.start_datum || !proj.eind_datum) {
                 // Als nog steeds geen datums, check of order wel leverdatum heeft
                 const order = proj.order;
@@ -701,11 +702,17 @@ function displayWeekPlanning(medewerkers, assignments, orders, weekPlannings, st
                 }
             }
             
+            // Check of project binnen zichtbare periode valt
             const start = new Date(proj.start_datum);
             const end = new Date(proj.eind_datum);
             const firstVisibleDay = new Date(allDays[0] + 'T00:00:00');
             const lastVisibleDay = new Date(allDays[allDays.length - 1] + 'T23:59:59');
-            return (start <= lastVisibleDay && end >= firstVisibleDay);
+            
+            // Project is zichtbaar als het overlapt met de zichtbare periode
+            const isVisible = (start <= lastVisibleDay && end >= firstVisibleDay);
+            
+            // BELANGRIJK: Alleen projecten die daadwerkelijk in zichtbare periode vallen
+            return isVisible;
         });
         
         // Maak week cellen met 7 dagen per week en project balken

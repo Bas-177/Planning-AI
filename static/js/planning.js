@@ -185,10 +185,30 @@ async function updateOrderStatusFromPlanning(ordernummer, newStatus) {
         });
         
         if (response.ok) {
+            // Check of response JSON is
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                await response.json().catch(() => {}); // Leeg response lezen
+            }
             loadPlanning(); // Herlaad planning
         } else {
-            const errorData = await response.json().catch(() => ({ detail: 'Onbekende fout' }));
-            alert('Fout bij updaten status: ' + (errorData.detail || `HTTP ${response.status}`));
+            // Probeer JSON te parsen, maar vang fouten op
+            let errorMessage = `HTTP ${response.status}`;
+            try {
+                const errorText = await response.text();
+                if (errorText) {
+                    try {
+                        const errorData = JSON.parse(errorText);
+                        errorMessage = errorData.detail || errorData.message || errorMessage;
+                    } catch {
+                        // Als het geen JSON is, gebruik de tekst
+                        errorMessage = errorText.length > 100 ? errorText.substring(0, 100) + '...' : errorText;
+                    }
+                }
+            } catch (e) {
+                console.error('Fout bij lezen error response:', e);
+            }
+            alert('Fout bij updaten status: ' + errorMessage);
         }
     } catch (error) {
         console.error('Fout bij updaten status:', error);

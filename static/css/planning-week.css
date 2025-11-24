@@ -48,6 +48,7 @@
     left: 0;
     background: #2c3e50;
     z-index: 11;
+    border-right: 2px solid #34495e; /* Duidelijkere scheiding */
 }
 
 .header-cell {
@@ -614,36 +615,95 @@
         top: 60px;
     }
     
+    .planning-header-left {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+    
+    .header-medewerker {
+        width: 50%;
+        min-width: 50%;
+        max-width: 50%;
+        font-size: 0.8rem;
+        padding: 8px 4px;
+    }
+    
+    .header-projecten {
+        width: 50%;
+        min-width: 50%;
+        max-width: 50%;
+        font-size: 0.8rem;
+        padding: 8px 4px;
+    }
+    
+    .planning-row-left {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .medewerker-cell {
+        width: 100%;
+        padding: 6px 4px;
+        font-size: 0.8rem;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .project-list-container {
+        width: 100%;
+        padding: 6px 4px;
+        max-height: none;
+        overflow-y: visible !important;
+    }
+    
     .day-header {
-        min-width: 50px;
-        font-size: 0.65rem;
+        min-width: 45px;
+        font-size: 0.6rem;
+        padding: 4px 2px;
     }
     
     .day-cell {
-        min-width: 50px;
+        min-width: 45px;
+        padding: 2px;
     }
     
     .week-days {
-        min-width: 350px; /* 7 dagen * 50px */
+        min-width: 315px; /* 7 dagen * 45px */
     }
     
     .week-cell {
-        min-width: 350px;
+        min-width: 315px;
     }
     
     .week-header-group {
-        min-width: 350px;
+        min-width: 315px;
     }
     
     .project-bar {
-        font-size: 0.6rem;
+        font-size: 0.55rem;
+        padding: 1px 3px;
+        min-height: 14px;
+        max-height: 14px;
     }
     
     .medewerker-naam {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
     }
     
     .project-list-item {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
+        padding: 3px 2px;
+    }
+    
+    .project-list-code {
+        font-size: 0.65rem;
+    }
+    
+    .project-list-bewerking {
+        font-size: 0.65rem;
+    }
+    
+    .project-list-uren {
+        font-size: 0.65rem;
     }
 }
