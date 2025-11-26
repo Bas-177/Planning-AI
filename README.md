@@ -28,10 +28,18 @@ QUICK_START.bat
 **Lokaal (deze computer):**
 - Ga naar: **http://localhost:8000**
 
-**Vanaf andere apparaten (telefoon, tablet, andere computers op hetzelfde netwerk):**
+**Vanaf andere apparaten op hetzelfde netwerk:**
 - Zie **NETWERK_TOEGANG.md** voor instructies
 - Gebruik je IP-adres: **http://<jouw-ip-adres>:8000**
 - Het IP-adres wordt automatisch getoond wanneer je de server start
+
+**Vanaf overal (internet toegang):**
+- **Option 1: Ngrok** (snel, publiek) - Zie **INSTALL_NGROK.md**
+  - Gebruik `START_WITH_NGROK.bat` om automatisch te starten
+  - Krijg een publieke URL zoals: `https://abc123.ngrok-free.app`
+- **Option 2: Tailscale** (veilig, privé) - Zie **INSTALL_TAILSCALE.md**
+  - Gebruik `GET_TAILSCALE_IP.bat` om je Tailscale IP te vinden
+  - Alleen toegankelijk voor mensen in je Tailscale netwerk
 
 ## 📁 Project Structuur
 
