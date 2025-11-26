@@ -298,7 +298,11 @@ async function loadOrders() {
         displayOrders(orders);
     } catch (error) {
         console.error('Fout bij laden orders:', error);
-        alert('Fout bij laden orders: ' + error.message);
+        if (typeof showError === 'function') {
+            showError('Fout bij laden orders: ' + (error.message || 'Onbekende fout'), 'Laden Orders');
+        } else {
+            alert('Fout bij laden orders: ' + error.message);
+        }
         displayOrders([]); // Toon lege tabel bij fout
     }
 }
@@ -593,7 +597,11 @@ async function createOrder(event) {
                 }
             }
             
-            alert(isEdit ? 'Order succesvol bijgewerkt!' : 'Order succesvol aangemaakt!');
+            if (typeof showSuccess === 'function') {
+                showSuccess(isEdit ? 'Order is succesvol bijgewerkt!' : 'Order is succesvol aangemaakt!', 'Order opgeslagen');
+            } else {
+                alert(isEdit ? 'Order succesvol bijgewerkt!' : 'Order succesvol aangemaakt!');
+            }
             hideNewOrderForm();
             loadOrders();
         } else {
@@ -614,7 +622,11 @@ async function createOrder(event) {
                 console.error('Fout bij parsen error response:', parseError);
                 errorMessage = `Server fout (${response.status}): ${response.statusText}`;
             }
-            alert(`Fout: ${errorMessage}`);
+            if (typeof showError === 'function') {
+                showError(errorMessage, 'Fout bij opslaan order');
+            } else {
+                alert(`Fout: ${errorMessage}`);
+            }
         }
     } catch (error) {
         console.error('Fout bij opslaan order:', error);
@@ -624,9 +636,17 @@ async function createOrder(event) {
             setTimeout(() => {
                 loadOrders();
             }, 500);
-            alert('Mogelijk netwerkfout. Controleer of de order is opgeslagen. Als de order wel is opgeslagen, wordt deze automatisch getoond.');
+            if (typeof showInfo === 'function') {
+                showInfo('Mogelijk netwerkfout. Controleer of de order is opgeslagen. Als de order wel is opgeslagen, wordt deze automatisch getoond.', 'Netwerkfout');
+            } else {
+                alert('Mogelijk netwerkfout. Controleer of de order is opgeslagen. Als de order wel is opgeslagen, wordt deze automatisch getoond.');
+            }
         } else {
-            alert('Fout bij opslaan order: ' + error.message);
+            if (typeof showError === 'function') {
+                showError('Fout bij opslaan order: ' + (error.message || 'Onbekende fout'), 'Fout bij opslaan');
+            } else {
+                alert('Fout bij opslaan order: ' + error.message);
+            }
         }
     }
 }
