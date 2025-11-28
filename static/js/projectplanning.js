@@ -109,7 +109,11 @@ async function loadProjectPlanning() {
         displayProjectPlanning(orders, assignments, standards);
     } catch (error) {
         console.error('Fout bij laden projectplanning:', error);
-        alert('Fout bij laden projectplanning: ' + error.message);
+        if (typeof showError === 'function') {
+            showError('Fout bij laden projectplanning: ' + (error.message || 'Onbekende fout'), 'Projectplanning Laden');
+        } else {
+            alert('Fout bij laden projectplanning: ' + error.message);
+        }
     }
 }
 

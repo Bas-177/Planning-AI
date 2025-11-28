@@ -27,7 +27,11 @@ async function loadPlanning() {
         }
     } catch (error) {
         console.error('Fout bij laden planning:', error);
-        alert('Fout bij laden planning: ' + error.message);
+        if (typeof showError === 'function') {
+            showError('Fout bij laden planning: ' + (error.message || 'Onbekende fout'), 'Planning Laden');
+        } else {
+            alert('Fout bij laden planning: ' + error.message);
+        }
     }
 }
 
@@ -155,7 +159,11 @@ async function updateOrderStatusFromPlanning(ordernummer, newStatus) {
     // Valideer ordernummer
     if (!ordernummer || ordernummer === 'null' || ordernummer === 'undefined') {
         console.error('Ongeldig ordernummer:', ordernummer);
-        alert('Fout: Ordernummer ontbreekt');
+        if (typeof showError === 'function') {
+            showError('Ordernummer ontbreekt', 'Fout');
+        } else {
+            alert('Fout: Ordernummer ontbreekt');
+        }
         return;
     }
     

@@ -205,7 +205,11 @@ async function loadWeekPlanning() {
                 <p>Controleer de console voor meer details.</p>
             </div>`;
         }
-        alert('Fout bij laden planning: ' + (error.message || 'Onbekende fout'));
+        if (typeof showError === 'function') {
+            showError('Fout bij laden planning: ' + (error.message || 'Onbekende fout'), 'Planning Laden');
+        } else {
+            alert('Fout bij laden planning: ' + (error.message || 'Onbekende fout'));
+        }
     }
 }
 
@@ -1137,7 +1141,11 @@ function showProjectDetailsFromBar(element) {
         showProjectDetails(ordernummer, order, bewerking, uren);
     } catch (e) {
         console.error('Fout bij parsen order data:', e);
-        alert('Fout bij laden project details');
+        if (typeof showError === 'function') {
+            showError('Fout bij laden project details', 'Project Details');
+        } else {
+            alert('Fout bij laden project details');
+        }
     }
 }
 
